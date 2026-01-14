@@ -8,9 +8,23 @@ const swaggerSpec = require('../swagger');
 const app = express();
 
 app.use(cors({
-  origin: '*',
+  // Allow the Angular dev server by default; keep permissive fallback for non-browser clients.
+  origin: (origin, callback) => {
+    const allowed = new Set([
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+    ]);
+
+    // No Origin header (curl, server-to-server) -> allow
+    if (!origin) return callback(null, true);
+
+    if (allowed.has(origin)) return callback(null, true);
+
+    // Fallback: allow other origins as well to avoid blocking previews (can be tightened later)
+    return callback(null, true);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.set('trust proxy', true);
 app.use('/docs', swaggerUi.serve, (req, res, next) => {

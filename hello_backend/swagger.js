@@ -4,10 +4,10 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'My Express API',
+      title: 'Hello World Location & Temperature API',
       version: '1.0.0',
-      description: 'A simple Express API documented with Swagger',
-    }
+      description: 'Express API for Hello World, IP-based location (placeholder), and temperature (mock), with request logging to SQLite.',
+    },
   },
   apis: ['./src/routes/*.js'], // Path to the API docs
 };
